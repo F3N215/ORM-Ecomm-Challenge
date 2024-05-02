@@ -33,11 +33,16 @@ router.post("/", (req, res) => {
             tag_id,
           };
         });
-        return ProductTag.bulkCreate(productTagIdArr);
+        return ProductTag.bulkCreate(productTagIdArr)
+          .then((productTagIds) => res.status(200).json(productTagIds))
+          .catch((err) => {
+            console.log(err);
+            res.status(400).json(err);
+          });
+      } else {
+        res.status(200).json(product);
       }
-      res.status(200).json(product);
     })
-    .then((productTagIds) => res.status(200).json(productTagIds))
     .catch((err) => {
       console.log(err);
       res.status(400).json(err);
